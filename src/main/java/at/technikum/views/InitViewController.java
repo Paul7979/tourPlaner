@@ -10,13 +10,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 @NoArgsConstructor
+@Slf4j
 public class InitViewController{
 
 
@@ -38,5 +42,13 @@ public class InitViewController{
 
     public void onButtonClick(ActionEvent actionEvent) {
         initViewModel.queryLocation();
+    }
+
+    public void onKeyReleased(KeyEvent keyEvent) {
+        initViewModel.queryLocation();
+    }
+
+    public void elementClicked(MouseEvent mouseEvent) {
+        log.info("Picked {}", listView.getSelectionModel().getSelectedItem());
     }
 }

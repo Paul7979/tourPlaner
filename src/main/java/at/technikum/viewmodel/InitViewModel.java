@@ -31,11 +31,14 @@ public class InitViewModel {
     }
 
     public void queryLocation() {
-        listProperty.setValue(FXCollections
-                .observableArrayList(locationModel.queryForLocation(queryParam.get())
-                        .stream()
-                        .map(Location::getDisplayName)
-                        .collect(Collectors.toList())));
+        if (queryParam.get() != null && queryParam.get().trim().length() > 2) {
+            var queryResultString = locationModel.queryForLocation(queryParam.get())
+                    .stream()
+                    .map(Location::getDisplayName)
+                    .collect(Collectors.toList());
+            listProperty.setValue(FXCollections
+                    .observableArrayList(queryResultString));
+        }
     }
 
 }

@@ -8,7 +8,7 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.views.InitViewController">
    <children>
       <Button onAction="#onButtonClick" layoutX="314.0" layoutY="43.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="79.0" text="Search" />
-      <TextField fx:id="startLocation" layoutX="58.0" layoutY="43.0" prefHeight="35.0" prefWidth="200.0" promptText="Start Location" />
-      <ListView fx:id="listView" layoutX="58.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" />
+      <TextField onKeyReleased="#onKeyReleased" fx:id="startLocation" layoutX="58.0" layoutY="43.0" prefHeight="35.0" prefWidth="200.0" promptText="Start Location" />
+      <ListView onMouseClicked="#elementClicked" fx:id="listView" layoutX="58.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </AnchorPane>
