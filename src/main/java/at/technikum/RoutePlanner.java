@@ -1,10 +1,15 @@
 package at.technikum;
 
+import at.technikum.model.ModelFactory;
+import at.technikum.viewmodel.ViewModelFactory;
+import at.technikum.views.ViewHandler;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 /**
  * JavaFX App
@@ -12,14 +17,11 @@ import javafx.stage.Stage;
 public class RoutePlanner extends Application {
 
     @Override
-    public void start(Stage stage) {
-        var javaVersion = SystemInfo.javaVersion();
-        var javafxVersion = SystemInfo.javafxVersion();
-
-        var label = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        var scene = new Scene(new StackPane(label), 640, 480);
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage stage) throws IOException {
+        var modelFactory = new ModelFactory();
+        var viewModelFactory = new ViewModelFactory(modelFactory);
+        var viewHandler = new ViewHandler(stage, viewModelFactory);
+        viewHandler.start();
     }
 
     public static void main(String[] args) {
