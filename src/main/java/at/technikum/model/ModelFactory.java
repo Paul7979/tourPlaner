@@ -1,11 +1,12 @@
 package at.technikum.model;
 
 public class ModelFactory {
-    private ILocationModel locationModel;
+    private ILocationRepository locationModel;
 
-    public ILocationModel getLocationModel() {
+    public ILocationRepository getLocationModel() {
         if (locationModel == null) {
-            locationModel = new MockLocationModel();
+            //locationModel = new MockLocationRepository();
+            locationModel = new MapQuestLocationRepository();
         }
         return locationModel;
     }

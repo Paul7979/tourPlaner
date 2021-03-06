@@ -1,0 +1,131 @@
+{
+  "request": {
+    "q": "den",
+    "limit": 5,
+    "feedback": false,
+    "collection": [
+      "category",
+      "airport",
+      "address",
+      "franchise",
+      "poi",
+      "adminArea"
+    ]
+  },
+  "results": [
+    {
+      "id": "mqId:282041090",
+      "displayString": "Denver, Denver County, CO, US",
+      "name": "Denver",
+      "recordType": "city",
+      "collection": [
+        "adminArea"
+      ],
+      "slug": "/us/co/denver",
+      "language": "en",
+      "place": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            -104.984853,
+            39.738453
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "city": "Denver",
+          "stateCode": "CO",
+          "county": "Denver County",
+          "countryCode": "US",
+          "type": "city"
+        }
+      }
+    },
+    {
+      "id": "mqId:416043009",
+      "displayString": "Dennis Scholl Construction, 4811 Lebanon Pike, Hermitage, TN",
+      "name": "Dennis Scholl Construction",
+      "recordType": "poi",
+      "collection": [
+        "poi"
+      ],
+      "mqId": 416043009,
+      "slug": "/us/tennessee/dennis-scholl-construction-416043009",
+      "language": "en",
+      "place": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            -86.587556,
+            36.216075
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "city": "Hermitage",
+          "stateCode": "TN",
+          "postalCode": "37076",
+          "countryCode": "US",
+          "street": "4811 Lebanon Pike",
+          "type": "address"
+        }
+      }
+    },
+    {
+      "id": "category:86dce0d7ad4a3ed7c158bd5184e9f279",
+      "sic": [
+        "802101"
+      ],
+      "displayString": "Dentists",
+      "name": "Dentists",
+      "recordType": "category",
+      "collection": [
+        "category"
+      ],
+      "language": "en"
+    },
+    {
+      "id": "mqId:10002325",
+      "displayString": "Denver International Airport (DEN), 8500 Pena Blvd, Denver, CO",
+      "name": "Denver International Airport (DEN)",
+      "recordType": "airport",
+      "collection": [
+        "airport"
+      ],
+      "mqId": 10002325,
+      "slug": "/us/colorado/denver-international-airport-den-10002325",
+      "language": "en",
+      "place": {
+        "type": "Feature",
+        "geometry": {
+          "coordinates": [
+            -104.671828,
+            39.840072
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "city": "Denver",
+          "stateCode": "CO",
+          "postalCode": "80249",
+          "countryCode": "US",
+          "street": "8500 Pena Blvd",
+          "type": "address"
+        }
+      }
+    },
+    {
+      "id": "category:47f912daf76a0014c575a8cde009f198",
+      "sic": [
+        "581208F97"
+      ],
+      "displayString": "Denny's",
+      "name": "Denny's",
+      "recordType": "franchise",
+      "collection": [
+        "franchise"
+      ],
+      "language": "en"
+    }
+  ]
+}

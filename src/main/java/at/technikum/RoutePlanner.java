@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import javax.management.RuntimeErrorException;
 import java.io.IOException;
 
 /**
@@ -18,6 +19,10 @@ public class RoutePlanner extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        var apiKey = System.getenv("apiKey");
+        if (apiKey == null) {
+            throw new IllegalStateException("No Api Key found!");
+        }
         var modelFactory = new ModelFactory();
         var viewModelFactory = new ViewModelFactory(modelFactory);
         var viewHandler = new ViewHandler(stage, viewModelFactory);
