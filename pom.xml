@@ -73,11 +73,6 @@
             <artifactId>postgresql</artifactId>
             <version>42.2.18.jre7</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>20.0</version>
-        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>

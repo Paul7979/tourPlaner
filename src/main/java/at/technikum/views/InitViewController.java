@@ -1,13 +1,8 @@
 package at.technikum.views;
 
 import at.technikum.viewmodel.InitViewModel;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -15,9 +10,6 @@ import javafx.scene.input.MouseEvent;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 @NoArgsConstructor
 @Slf4j

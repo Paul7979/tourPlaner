@@ -1,8 +1,6 @@
 package at.technikum.viewmodel;
 
 import at.technikum.model.ModelFactory;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 
 public class ViewModelFactory {
