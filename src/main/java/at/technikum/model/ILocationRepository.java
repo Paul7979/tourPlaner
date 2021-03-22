@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface ILocationRepository {
 
-    Task<List<Location>> queryForLocation(String query);
+    void setQuery(String query);
+
+    Task<List<Location>> createTask();
 }

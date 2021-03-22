@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.springframework.context.annotation.ComponentScan;
 
 import javax.management.RuntimeErrorException;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.io.IOException;
 /**
  * JavaFX App
  */
+@ComponentScan("at.technikum")
 public class RoutePlanner extends Application {
 
     @Override

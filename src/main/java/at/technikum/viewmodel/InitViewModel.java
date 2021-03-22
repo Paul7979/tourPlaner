@@ -2,32 +2,31 @@ package at.technikum.viewmodel;
 
 import at.technikum.model.ILocationRepository;
 import at.technikum.model.Location;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 import java.util.stream.Collectors;
 
 @Getter
 @Slf4j
 public class InitViewModel {
 
-    private ILocationRepository locationModel;
+    private final ILocationRepository locationModel;
 
-    private ListProperty<String> listProperty;
+    private final ListProperty<String> listProperty;
 
-    private StringProperty queryParam;
+    private final StringProperty queryParamStart;
+
+    private final StringProperty queryParamDestination;
+
+    private final BooleanProperty inProgressStart;
+
+    private final BooleanProperty inProgressDestination;
+
 
     //private final ExecutorService executorService = Executors.newCachedThreadPool();
     private final ExecutorService executorService= Executors
@@ -40,13 +39,27 @@ public class InitViewModel {
 
     public InitViewModel(ILocationRepository locationModel) {
         this.locationModel = locationModel;
-        queryParam = new SimpleStringProperty();
+        queryParamStart = new SimpleStringProperty();
+        queryParamDestination = new SimpleStringProperty();
         listProperty = new SimpleListProperty<>();
+        inProgressStart = new SimpleBooleanProperty(false);
+        inProgressDestination = new SimpleBooleanProperty(false);
     }
 
-    public void queryLocation() {
-        if (queryParam.get() != null && queryParam.get().trim().length() > 2) {
-            var query = locationModel.queryForLocation(queryParam.get());
+    public void queryStartLocation() {
+        queryLocation(inProgressStart, queryParamStart.get());
+    }
+
+    public void queryDestinationLocation() {
+        queryLocation(inProgressDestination, queryParamDestination.get());
+    }
+
+    private void queryLocation(BooleanProperty inProgress, String queryParam) {
+        log.info("Starting Query for {}", queryParam);
+        if (queryParamStart.get() != null && queryParam.trim().length() > 2) {
+            locationModel.setQuery(queryParam);
+            var query = locationModel.createTask();
+            inProgress.bind(query.runningProperty());
             executorService.submit(query);
             query.setOnSucceeded(workerStateEvent -> {
                 var queryResultString = query.getValue()

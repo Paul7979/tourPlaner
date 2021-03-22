@@ -10,10 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class MockLocationRepository implements ILocationRepository {
+public class MockLocationRepository {
 
     //Use search ahead api: https://developer.mapquest.com/documentation/searchahead-api/get/
-    @Override
     public Task<List<Location>> queryForLocation(String query) {
         return new Task<List<Location>>() {
             @Override
