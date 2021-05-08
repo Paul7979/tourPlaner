@@ -4,7 +4,6 @@ import at.technikum.viewmodel.ViewModelFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +39,4 @@ public class ViewHandler {
         stage.setTitle("RoutePlaner");
         stage.show();
     }
-
-    ;
 }

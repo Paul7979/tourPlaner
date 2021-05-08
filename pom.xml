@@ -5,13 +5,13 @@
     <artifactId>routePlanner</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <properties>
-        <java.version>15</java.version>
-        <lombok-version>1.18.12</lombok-version>
+        <java.version>16</java.version>
+        <lombok-version>1.18.20</lombok-version>
         <slf4j.version>1.7.26</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
     </properties>
     <build>
         <plugins>
@@ -89,11 +89,6 @@
             <artifactId>slf4j-jdk14</artifactId>
             <version>1.7.25</version>
         </dependency>-->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>5.3.3</version>
-        </dependency>
 
 
         <dependency>

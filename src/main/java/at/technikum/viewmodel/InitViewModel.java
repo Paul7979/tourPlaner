@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 @Getter
 @Slf4j
@@ -27,8 +26,6 @@ public class InitViewModel {
 
     private final BooleanProperty inProgressDestination;
 
-
-    //private final ExecutorService executorService = Executors.newCachedThreadPool();
     private final ExecutorService executorService= Executors
             .newFixedThreadPool(4, r -> {
                 Thread t = Executors.defaultThreadFactory().newThread(r);
@@ -65,7 +62,7 @@ public class InitViewModel {
                 var queryResultString = query.getValue()
                         .stream()
                         .map(Location::getDisplayName)
-                        .collect(Collectors.toList());
+                        .toList();
                 listProperty.setValue(FXCollections
                         .observableArrayList(queryResultString));
             });
