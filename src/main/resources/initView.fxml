@@ -1,41 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ProgressIndicator?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<GridPane alignment="center" hgap="10" prefHeight="800" prefWidth="1000" vgap="10"
+          xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="at.technikum.views.InitViewController">
 
-<GridPane hgap="5.0" prefHeight="351.0" prefWidth="632.0" vgap="5.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.views.InitViewController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.0" minWidth="3.0" prefWidth="35.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="362.0" minWidth="10.0" prefWidth="348.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints maxHeight="175.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="237.0" minHeight="10.0" prefHeight="237.0" vgrow="SOMETIMES" />
-  </rowConstraints>
-   <children>
-      <TextField fx:id="startLocation" onKeyReleased="#onKeyReleasedStart" prefHeight="35.0" prefWidth="150.0" promptText="Start Location" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
-         <GridPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </GridPane.margin>
-      </TextField>
-      <ListView fx:id="listView" onMouseClicked="#elementClicked" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
-         <GridPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </GridPane.margin>
-      </ListView>
-      <TextField fx:id="destinationLocation" onKeyReleased="#onKeyReleasedDestination" prefHeight="35.0" prefWidth="150.0" promptText="Start Location" GridPane.rowIndex="1">
-         <GridPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </GridPane.margin>
-      </TextField>
-      <ProgressIndicator fx:id="progressStart" visible="true" GridPane.columnIndex="1" />
-      <ProgressIndicator fx:id="progressDestination" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-   </children>
+    <columnConstraints>
+        <ColumnConstraints/>
+        <ColumnConstraints hgrow="ALWAYS"/>
+        <ColumnConstraints hgrow="ALWAYS"/>
+        <ColumnConstraints hgrow="ALWAYS"/>
+        <ColumnConstraints hgrow="ALWAYS"/>
+        <ColumnConstraints hgrow="ALWAYS"/>
+        <ColumnConstraints/>
+
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints vgrow="ALWAYS"/>
+        <RowConstraints vgrow="ALWAYS"/>
+        <RowConstraints vgrow="ALWAYS"/>
+        <RowConstraints vgrow="ALWAYS"/>
+        <RowConstraints vgrow="ALWAYS"/>
+        <RowConstraints vgrow="ALWAYS"/>
+        <RowConstraints vgrow="ALWAYS"/>
+        <RowConstraints vgrow="ALWAYS"/>
+        <RowConstraints vgrow="ALWAYS"/>
+        <RowConstraints vgrow="ALWAYS"/>
+    </rowConstraints>
+
+    <!--region column0-->
+    <Text text="Tour-Planner" GridPane.columnIndex="0" GridPane.columnSpan="6" GridPane.halignment="CENTER"
+          GridPane.rowIndex="0" GridPane.valignment="CENTER"/>
+
+    <MenuBar GridPane.columnIndex="0" GridPane.columnSpan="7" GridPane.rowIndex="1">
+        <Menu mnemonicParsing="false" text="File">
+            <MenuItem onAction="#generateReport" mnemonicParsing="false" text="Save as PDF"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+            <MenuItem mnemonicParsing="false" text="UNDO"/>
+            <MenuItem mnemonicParsing="false" text="REDO"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Options">
+            <MenuItem onAction="#exportData" mnemonicParsing="false" text="Export as JSON"/>
+            <MenuItem onAction="#importData" mnemonicParsing="false" text="Import as JSON"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <MenuItem mnemonicParsing="false" text="About"/>
+        </Menu>
+    </MenuBar>
+
+    <HBox GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <Label alignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2">Search
+                Tour:
+            </Label>
+            <TextField fx:id="fullTextSearch" promptText="Search Something">
+                <padding>
+                    <Insets bottom="5.0" right="5.0"/>
+                </padding>
+                <GridPane.margin>
+                    <Insets left="10.0" right="10.0"/>
+                </GridPane.margin>
+                <HBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </HBox.margin>
+            </TextField>
+    </HBox>
+
+    <fx:include fx:id="toursSidebarView" source="toursSidebarView.fxml" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.rowSpan="10"
+                GridPane.valignment="TOP"/>
+    <!--endregion -->
+
+    <!--region column1-->
+    <!--endregion -->
+
+    <!--region column2-->
+
+    <fx:include fx:id="tourDescriptionView" source="tourDescriptionView.fxml" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="2"
+                GridPane.rowSpan="5" GridPane.valignment="TOP"/>
+
+
+    <fx:include fx:id="tourLogsView" source="tourLogsView.fxml" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="7"
+                GridPane.rowSpan="6" GridPane.valignment="TOP"/>
+
+    <!--endregion -->
+
+    <!--region column6-->
+    <!--endregion -->
+
 </GridPane>

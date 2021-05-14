@@ -21,8 +21,9 @@ public class RoutePlanner extends Application {
         }
         var modelFactory = new ModelFactory();
         var viewModelFactory = new ViewModelFactory(modelFactory);
-        var viewHandler = new ViewHandler(stage, viewModelFactory);
-        viewHandler.start();
+        //var viewHandler = new ViewHandler(viewModelFactory);
+        ViewHandler.setViewModelFactory(viewModelFactory);
+        ViewHandler.start(stage);
     }
 
     public static void main(String[] args) {
