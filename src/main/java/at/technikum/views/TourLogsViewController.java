@@ -18,9 +18,9 @@ public class TourLogsViewController implements Initializable {
     private Long selectedLogId = 0L;
 
     //private Tour selectedTour;
-    public LongProperty selectedTourId= new SimpleLongProperty();
+    public LongProperty selectedTourId = new SimpleLongProperty();
 
-    public StringProperty searchString= new SimpleStringProperty();
+    public StringProperty searchString = new SimpleStringProperty();
 
     //public TourLogCreateViewController logCreateViewController;
 

@@ -13,4 +13,8 @@ public class Tour {
     private int distance;
     private String description;
     //private List<Object> logs;
+
+    public String getFullTextSearchString() {
+        return (name + description + distance + destination + start).toLowerCase();
+    }
 }

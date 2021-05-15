@@ -19,9 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 public class InitViewController implements ViewController{
 
 
-    public LongProperty selectedTourId= new SimpleLongProperty();
+    public LongProperty selectedTourId = new SimpleLongProperty();
 
-    public StringProperty searchString= new SimpleStringProperty("");
+    public StringProperty searchString = new SimpleStringProperty("");
 
     @FXML
     public TextField fullTextSearch;
@@ -69,9 +69,13 @@ public class InitViewController implements ViewController{
         selectedTourId.bindBidirectional(tourLogsViewController.selectedTourId);
         initViewModel.setTours(toursSidebarViewController.toursListView.getItems());
 
-        fullTextSearch.textProperty().bindBidirectional(searchString);
+        //fullTextSearch.textProperty().bindBidirectional(searchString);
 
-        searchString.bindBidirectional(toursSidebarViewController.searchString);
+        //searchString.bindBidirectional(toursSidebarViewController.getSearchString());
+        initViewModel.getFullTextSearch().bindBidirectional(fullTextSearch.textProperty());
+        fullTextSearch.setOnKeyReleased(event -> {
+            initViewModel.modelOrSearchChanged();
+        });
         searchString.bindBidirectional(tourLogsViewController.searchString);
     }
 

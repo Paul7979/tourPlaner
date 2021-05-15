@@ -8,11 +8,13 @@ import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
 @Slf4j
+@Getter
 public class ToursSidebarViewController {
 
     public LongProperty selectedTourId= new SimpleLongProperty();
@@ -21,7 +23,7 @@ public class ToursSidebarViewController {
 
     //public TourEditViewController tourEditViewController;
 
-    public StringProperty searchString= new SimpleStringProperty();
+    private StringProperty searchString = new SimpleStringProperty();
 
     public ListView<Tour> toursListView;
 

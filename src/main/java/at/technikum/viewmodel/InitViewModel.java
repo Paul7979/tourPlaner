@@ -3,6 +3,8 @@ package at.technikum.viewmodel;
 import at.technikum.model.ModelFactory;
 import at.technikum.model.Tour;
 import at.technikum.model.tours.ToursModel;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,15 +19,24 @@ public class InitViewModel {
 
     private ObservableList<Tour> tours;
 
+    private StringProperty fullTextSearch = new SimpleStringProperty();
+
     public InitViewModel(ModelFactory modelFactory) {
         //this.modelFactory = modelFactory;
         toursModel = modelFactory.getToursModel();
-        toursModel.addCallback(this::modelChanged);
+        toursModel.addToursChangedCallback(this::modelOrSearchChanged);
     }
 
-    private void modelChanged() {
+    public void modelOrSearchChanged() {
         log.info("Callback got called!");
         tours.retainAll();
-        tours.addAll(toursModel.getAll());
+
+        if (fullTextSearch.get() == null || fullTextSearch.get().isBlank() || fullTextSearch.get().length() < 2) {
+            tours.addAll(toursModel.getAll());
+            return;
+        }
+        tours.addAll(toursModel.getAllFullTextSearch(fullTextSearch));
+
+
     }
 }
