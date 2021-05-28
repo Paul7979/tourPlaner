@@ -1,8 +1,8 @@
 package at.technikum.views;
 
+import at.technikum.viewmodel.CreateLogViewModel;
+import at.technikum.viewmodel.CreateTourViewModel;
 import at.technikum.viewmodel.InitViewModel;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -17,9 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @Slf4j
 public class InitViewController implements ViewController{
-
-
-    public LongProperty selectedTourId = new SimpleLongProperty();
 
     public StringProperty searchString = new SimpleStringProperty("");
 
@@ -62,26 +59,33 @@ public class InitViewController implements ViewController{
         progressDestination.visibleProperty().bindBidirectional(initViewModel.getInProgressDestination());
     }*/
 
-    public void init(InitViewModel initViewModel) {
+    public void init(InitViewModel initViewModel, CreateLogViewModel createLogViewModel, CreateTourViewModel createTourViewModel) {
         this.initViewModel = initViewModel;
-        selectedTourId.bindBidirectional(toursSidebarViewController.selectedTourId);
-        selectedTourId.bindBidirectional(tourDescriptionViewController.selectedTourId);
-        selectedTourId.bindBidirectional(tourLogsViewController.selectedTourId);
+
         initViewModel.setTours(toursSidebarViewController.toursListView.getItems());
+        initViewModel.setLogs(tourLogsViewController.logsListView.getItems());
 
-        //fullTextSearch.textProperty().bindBidirectional(searchString);
 
-        //searchString.bindBidirectional(toursSidebarViewController.getSearchString());
+        initViewModel.getSelectedTour().bindBidirectional(toursSidebarViewController.selectedTour);
+        tourLogsViewController.selectedTour.bindBidirectional(toursSidebarViewController.selectedTour);
+        createLogViewModel.selectedLog.bindBidirectional(tourLogsViewController.selectedLog);
+
+
+        tourLogsViewController.setCreateLogViewModel(createLogViewModel);
+        toursSidebarViewController.setCreateTourViewModel(createTourViewModel);
+
         initViewModel.getFullTextSearch().bindBidirectional(fullTextSearch.textProperty());
         fullTextSearch.setOnKeyReleased(event -> {
             initViewModel.modelOrSearchChanged();
         });
+
+        //Refresh on startup
+        initViewModel.modelOrSearchChanged();
+
+        tourDescriptionViewController.selectedTourRouteInfoField.imageProperty().bindBidirectional(initViewModel.getSelectedTourImage());
+        tourDescriptionViewController.selectedTourDescField.textProperty().bindBidirectional(initViewModel.getSelectedTourDescription());
+        tourDescriptionViewController.selectedTourNameField.textProperty().bindBidirectional(initViewModel.getSelectedTourName());
         searchString.bindBidirectional(tourLogsViewController.searchString);
-    }
-
-
-    public void onButtonClick(ActionEvent actionEvent) {
-        //initViewModel.queryLocation(inProgressStart);
     }
 
     public void onKeyReleasedStart(KeyEvent keyEvent) {

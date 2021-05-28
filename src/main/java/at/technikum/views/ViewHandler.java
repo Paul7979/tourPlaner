@@ -33,11 +33,15 @@ public class ViewHandler {
 
         if ("init".equals(viewToOpen)) {
             InitViewController controller = loader.getController();
-            controller.init(viewModelFactory.getInitViewModel());
+            controller.init(viewModelFactory.getInitViewModel(), viewModelFactory.getCreateLogViewModel(), viewModelFactory.getCreateTourViewModel());
         }
-        if ("CreateTour".equals(viewToOpen)) {
+        if ("createTour".equals(viewToOpen)) {
             CreateTourViewController controller = loader.getController();
             controller.init(viewModelFactory.getCreateTourViewModel());
+        }
+        if ("createTourLog".equals(viewToOpen)) {
+            CreateTourLogController controller = loader.getController();
+            controller.init(viewModelFactory.getCreateLogViewModel());
         }
         //InitViewController controller = loader.getController();
         //controller.init(viewModelFactory.getInitViewModel());

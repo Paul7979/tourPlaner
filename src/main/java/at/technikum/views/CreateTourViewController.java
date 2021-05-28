@@ -72,20 +72,6 @@ public class CreateTourViewController implements Initializable, ViewController {
     public void updatePreview(ActionEvent actionEvent) {
         System.out.println("Updating preview");
         createTourViewModel.updatePreview();
-
-        /*if (validStartAndDestination(start, destination)) {
-            var searchService = MapSearchService.getInstance();
-            var imageTask = searchService.searchMap(start, destination);
-            inProgress.bind(imageTask.runningProperty());
-            TaskExecutorService.execute(imageTask);
-            imageTask.setOnSucceeded(workerStateEvent -> {
-                preview.setImage(imageTask.getValue());
-            });
-            imageTask.setOnFailed(workerStateEvent -> {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "No Route Found :(");
-                alert.showAndWait();
-            });
-        }*/
     }
 
     private boolean validStartAndDestination(TextField start, TextField destination) {

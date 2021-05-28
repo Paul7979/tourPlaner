@@ -1,8 +1,5 @@
 package at.technikum.views;
 
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -17,18 +14,11 @@ import java.util.ResourceBundle;
 public class TourDescriptionViewController implements Initializable {
 
 
-    //private Tour selectedTour= null;
-    public LongProperty selectedTourId= new SimpleLongProperty();
-
-
     @FXML
     public Label selectedTourNameField = new Label();
-    SimpleStringProperty selectedTourName = new SimpleStringProperty();
 
     @FXML
     public TextArea selectedTourDescField= new TextArea();
-
-    SimpleStringProperty selectedTourDesc = new SimpleStringProperty();
 
     @FXML
     public ImageView selectedTourRouteInfoField = new ImageView();
@@ -36,6 +26,5 @@ public class TourDescriptionViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 }

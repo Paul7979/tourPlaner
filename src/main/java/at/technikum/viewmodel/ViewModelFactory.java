@@ -8,9 +8,11 @@ public class ViewModelFactory {
 
     private final InitViewModel initViewModel;
     private final CreateTourViewModel createTourViewModel;
+    private final CreateLogViewModel createLogViewModel;
 
     public ViewModelFactory (ModelFactory modelFactory) {
         initViewModel = new InitViewModel(modelFactory);
         createTourViewModel = new CreateTourViewModel(modelFactory);
+        createLogViewModel = new CreateLogViewModel(modelFactory);
     }
 }

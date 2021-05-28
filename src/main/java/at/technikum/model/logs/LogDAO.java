@@ -1,0 +1,15 @@
+package at.technikum.model.logs;
+
+import at.technikum.model.tours.Tour;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface LogDAO {
+
+    void addLogForTour(Tour tour, Log log);
+
+    Optional<List<Log>> getLogsFor(Tour tour);
+
+    void removeLog(Log log);
+}

@@ -1,4 +1,4 @@
-package at.technikum.model;
+package at.technikum.model.tours;
 
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +12,7 @@ public class Tour {
     private String destination;
     private int distance;
     private String description;
+    private String mapPath;
     //private List<Object> logs;
 
     public String getFullTextSearchString() {

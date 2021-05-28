@@ -2,7 +2,7 @@ package at.technikum.viewmodel;
 
 import at.technikum.client.mapsearch.MapSearchService;
 import at.technikum.model.ModelFactory;
-import at.technikum.model.Tour;
+import at.technikum.model.tours.Tour;
 import at.technikum.model.tours.ToursModel;
 import at.technikum.util.TaskExecutorService;
 import javafx.beans.property.*;
@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 public class CreateTourViewModel {
 
-    private final MapSearchService mapSearchService;
+    private final MapSearchService searchService;
 
     private final BooleanProperty inProgress;
 
@@ -32,7 +32,7 @@ public class CreateTourViewModel {
     private final ToursModel toursModel;
 
     public CreateTourViewModel(ModelFactory modelFactory) {
-        mapSearchService = modelFactory.getMapSearchService();
+        searchService = modelFactory.getMapSearchService();
         toursModel = modelFactory.getToursModel();
         inProgress = new SimpleBooleanProperty(false);
         start = new SimpleStringProperty();
@@ -46,8 +46,7 @@ public class CreateTourViewModel {
 
     public void updatePreview() {
         if (validateSearchParams()) {
-            var searchService = MapSearchService.getInstance();
-            var imageTask = searchService.searchMap(start.get(), destination.get());
+            var imageTask = searchService.searchMapPreview(start.get(), destination.get());
             inProgress.bind(imageTask.runningProperty());
             imageVisible.bind(imageTask.runningProperty().not());
             TaskExecutorService.execute(imageTask);
@@ -68,11 +67,18 @@ public class CreateTourViewModel {
     public List<String> createTour() {
         var errors = validateInputForTour();
         if (errors.isEmpty()) {
+            var path = searchService.searchMapFullSizeBlocking(start.get(), destination.get());
+            if (path.isEmpty()) {
+                errors.add("Start, Destination");
+                return errors;
+            }
             var tour = Tour.builder()
+                    .mapPath(path.get())
                     .destination(destination.get())
                     .start(start.get())
-                    .name(description.get())
+                    .name(name.get())
                     .distance(Integer.parseInt(distance.get()))
+                    .description(description.get())
                     .build();
             toursModel.addTour(tour);
             clearViewModel();
@@ -81,8 +87,15 @@ public class CreateTourViewModel {
         return errors;
     }
 
+    public void removeTour(Tour tour) {
+        toursModel.removeTour(tour);
+    }
+
     private List<String> validateInputForTour() {
         List<String> errors = new ArrayList<>();
+        if (!validateSearchParams()) {
+            errors.add("Search Params");
+        }
         if (isEmpty(destination.get())) {
             errors.add("Destination");
         }
@@ -98,7 +111,7 @@ public class CreateTourViewModel {
         if (isEmpty(distance.get())) {
             errors.add("Distance");
         }
-        if (!distance.get().matches("\\d+")) {
+        if (distance.get() == null || !distance.get().matches("\\d+")) {
             errors.add("Distance no Integer");
         }
         return errors;
@@ -110,6 +123,7 @@ public class CreateTourViewModel {
         destination.setValue("");
         description.setValue("");
         name.setValue("");
+        preview.setValue(null);
     }
 
     private boolean isEmpty(String string) {
