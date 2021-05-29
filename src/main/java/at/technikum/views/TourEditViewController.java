@@ -1,54 +1,36 @@
 package at.technikum.views;
 
+import at.technikum.model.tours.Tour;
 import at.technikum.viewmodel.CreateTourViewModel;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class CreateTourViewController implements Initializable, ViewController {
-
-    @FXML
-    public TextField name;
-
-    @FXML
-    public TextField description;
-
-    @FXML
-    public TextField distance ;
-
-    @FXML
-    public TextField start;
-
-    @FXML
-    public TextField destination;
-
-    @FXML
-    public ImageView preview;
-
-    @FXML
-    public ProgressIndicator progressStart;
+@Slf4j
+public class TourEditViewController implements ViewController {
 
     private CreateTourViewModel createTourViewModel;
 
+    public TextField name;
+    public TextField description;
+    public TextField distance;
+    public TextField start;
+    public TextField destination;
+    public ImageView preview;
+    public ProgressIndicator progressStart;
+
+    @Setter
+    private Tour selectedTourWhenOpened;
+
     private BooleanProperty inProgress = new SimpleBooleanProperty(false);
 
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Initializing create tour view controller");
-        //progressStart.setProgress(-1);
-        //progressStart.visibleProperty().bindBidirectional(inProgress);
-    }
 
     public void init(CreateTourViewModel createTourViewModel) {
         this.createTourViewModel = createTourViewModel;
@@ -63,8 +45,17 @@ public class CreateTourViewController implements Initializable, ViewController {
         name.textProperty().bindBidirectional(createTourViewModel.getName());
     }
 
+    public void fillViewModelToEdit(Tour tour) {
+        log.info("Editing tour {}", tour);
+        selectedTourWhenOpened = tour;
+        name.textProperty().setValue(tour.getName());
+        description.textProperty().setValue(tour.getDescription());
+        distance.textProperty().setValue(String.valueOf(tour.getDistance()));
+        start.textProperty().setValue(tour.getStart());
+        destination.textProperty().setValue(tour.getDestination());
+    }
+
     public void cancelCreation(ActionEvent actionEvent) {
-        createTourViewModel.clearViewModel();
         var stage = (Stage) name.getScene().getWindow();
         stage.close();
     }
@@ -73,19 +64,14 @@ public class CreateTourViewController implements Initializable, ViewController {
         createTourViewModel.updatePreview();
     }
 
-    private boolean validStartAndDestination(TextField start, TextField destination) {
-        return start.textProperty().get().length() > 2 && destination.textProperty().get().length() > 2;
-    }
-
-    public void createTour(ActionEvent actionEvent) {
-        var errors = createTourViewModel.createTour();
+    public void saveTour(ActionEvent actionEvent) {
+        var errors = createTourViewModel.updateTour(selectedTourWhenOpened);
         if (errors.isEmpty()) {
             var stage = (Stage) name.getScene().getWindow();
             stage.close();
-            return;
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Errors with inputs: %s".formatted(String.join(", ", errors)));
+            alert.showAndWait();
         }
-        Alert alert = new Alert(Alert.AlertType.WARNING, "Errors with inputs: %s".formatted(String.join(", ", errors)));
-        alert.showAndWait();
     }
-
 }

@@ -77,4 +77,9 @@ public class ToursModel {
         }
     }
 
+    public void updateTour(Tour tour) {
+        tourDAO.update(tour);
+        toursChangedCallbacks.forEach(Runnable::run);
+        selectedTourChangedCallback.forEach(Runnable::run);
+    }
 }

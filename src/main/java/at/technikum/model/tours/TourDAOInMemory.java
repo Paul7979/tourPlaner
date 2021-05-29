@@ -53,4 +53,9 @@ public class TourDAOInMemory implements TourDAO {
     public void remove(Tour tour) {
         tours.remove(tour);
     }
+
+    @Override
+    public void update(Tour tour) {
+        throw new IllegalStateException("NOT IMPLEMENTED");
+    }
 }

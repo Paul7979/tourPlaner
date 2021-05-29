@@ -20,6 +20,7 @@ public class ViewHandler {
     public static final String CREATE_TOUR = "createTour";
     public static final String INIT = "init";
     public static final String EDIT_TOUR_LOG = "editTourLog";
+    public static final String EDIT_TOUR = "editTour";
     @Setter
     private static ViewModelFactory viewModelFactory;
 
@@ -55,6 +56,10 @@ public class ViewHandler {
         if (EDIT_TOUR_LOG.equals(viewToOpen)) {
             TourLogEditViewController controller = loader.getController();
             controller.init(viewModelFactory.getLogEditViewModel());
+        }
+        if (EDIT_TOUR.equals(viewToOpen)) {
+            TourEditViewController controller = loader.getController();
+            controller.init(viewModelFactory.getCreateTourViewModel());
         }
 
         //InitViewController controller = loader.getController();

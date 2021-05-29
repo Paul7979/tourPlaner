@@ -13,4 +13,6 @@ public interface TourDAO {
     List<Tour> searchFor(String term);
 
     void remove(Tour tour);
+
+    void update(Tour tour);
 }

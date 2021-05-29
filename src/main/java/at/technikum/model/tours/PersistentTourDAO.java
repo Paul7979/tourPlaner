@@ -3,10 +3,7 @@ package at.technikum.model.tours;
 import at.technikum.util.SQLConnectionProvider;
 import lombok.extern.slf4j.Slf4j;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +14,11 @@ public class PersistentTourDAO implements TourDAO {
     private static final String CREATE_TOUR = """
             INSERT into tour(name, start, destination, distance, description, path_to_picture) 
             VALUES (?,?,?,?,?,?)""";
+
+    private static final String UPDATE_TOUR = """
+            UPDATE tour 
+            SET name = ?, start = ?, destination = ?, distance = ?, description = ?, path_to_picture = ?
+            WHERE id = ?""";
 
     private static final String GET_TOUR_BY_ID = """
             SELECT id, name, start, destination, distance, description, path_to_picture 
@@ -50,7 +52,6 @@ public class PersistentTourDAO implements TourDAO {
             if (affectedRows == 0) {
                 throw new SQLException("Creating failed, no rows affected");
             }
-            //TODO:WHY NO ID?
             ResultSet generated = preparedStatement.getGeneratedKeys();
             if (generated.next()) {
                 var id = generated.getInt(1);
@@ -63,11 +64,34 @@ public class PersistentTourDAO implements TourDAO {
             }
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            log.error("Error creating tour", throwables);
             SQLConnectionProvider.releaseConnection(connection);
         }
         SQLConnectionProvider.releaseConnection(connection);
         return null;
+    }
+
+    public void update(Tour tour) {
+        var connection = SQLConnectionProvider.getConnection();
+        try {
+            var preparedStatement = connection.prepareStatement(UPDATE_TOUR);
+            preparedStatement.setString(1, tour.getName());
+            preparedStatement.setString(2, tour.getStart());
+            preparedStatement.setString(3, tour.getDestination());
+            preparedStatement.setInt(4, tour.getDistance());
+            preparedStatement.setString(5, tour.getDescription());
+            preparedStatement.setString(6, tour.getMapPath());
+            preparedStatement.setInt(7, (int) tour.getId());
+
+            var i = preparedStatement.executeUpdate();
+            if (i == 0) {
+                throw new SQLException("Error updating tour, 0 affected rows");
+            }
+            SQLConnectionProvider.releaseConnection(connection);
+        } catch (SQLException throwables) {
+            SQLConnectionProvider.releaseConnection(connection);
+            log.error("Error updating tour", throwables);
+        }
     }
 
     @Override

@@ -11,6 +11,7 @@ public class ViewModelFactory {
     private final CreateLogViewModel createLogViewModel;
     private final LogDetailsViewModel logDetailsViewModel;
     private final LogEditViewModel logEditViewModel;
+    public final EditTourViewModel editTourViewModel;
 
     public ViewModelFactory (ModelFactory modelFactory) {
         initViewModel = new InitViewModel(modelFactory);
@@ -18,5 +19,6 @@ public class ViewModelFactory {
         createLogViewModel = new CreateLogViewModel(modelFactory);
         logDetailsViewModel = new LogDetailsViewModel(modelFactory);
         logEditViewModel = new LogEditViewModel(modelFactory);
+        editTourViewModel = new EditTourViewModel(modelFactory);
     }
 }

@@ -5,6 +5,7 @@ import at.technikum.viewmodel.CreateTourViewModel;
 import javafx.beans.property.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
@@ -42,8 +43,18 @@ public class ToursSidebarViewController implements Initializable {
         createTourViewModel.removeTour(selectedTour.get());
     }
 
-    public void editTour(ActionEvent actionEvent) {
+    public void editTour(ActionEvent actionEvent) throws IOException {
         log.info("edit tour");
+        var tour = selectedTour.get();
+        if (tour != null) {
+            var tourEditController = (TourEditViewController) ViewHandler.openView(ViewHandler.EDIT_TOUR, new Stage(), "Edit Tour");
+            tourEditController.fillViewModelToEdit(tour);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Choose tour to edit!");
+            alert.showAndWait();
+        }
+
+
     }
 
     @Override

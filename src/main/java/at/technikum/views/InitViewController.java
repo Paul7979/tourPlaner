@@ -42,7 +42,6 @@ public class InitViewController implements ViewController{
         initViewModel.setTours(toursSidebarViewController.toursListView.getItems());
         initViewModel.setLogs(tourLogsViewController.logsListView.getItems());
 
-
         initViewModel.getSelectedTour().bindBidirectional(toursSidebarViewController.selectedTour);
         tourLogsViewController.selectedTour.bindBidirectional(toursSidebarViewController.selectedTour);
         createLogViewModel.selectedLog.bindBidirectional(tourLogsViewController.selectedLog);

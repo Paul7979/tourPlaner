@@ -9,11 +9,13 @@ import javafx.beans.property.*;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Slf4j
 public class CreateTourViewModel {
 
     private final MapSearchService searchService;
@@ -85,6 +87,45 @@ public class CreateTourViewModel {
             return errors;
         }
         return errors;
+    }
+
+    public List<String> updateTour(Tour tour) {
+        var errors = validateInputForTour();
+        if (errors.isEmpty()) {
+            Tour tour_to_insert = getTourToInsert(tour);
+            tour_to_insert.setMapPath(tour.getMapPath());
+            if (!isEqualRoute(tour_to_insert, tour)) {
+                var pathOptional = searchService.searchMapFullSizeBlocking(start.get(), destination.get());
+                if (pathOptional.isEmpty()) {
+                    log.error("Could not fetch map for tour");
+                    errors.add("Start, Destination");
+                    return errors;
+                }
+                var newPath = pathOptional.get();
+                log.info("New Path is {}", newPath);
+                tour_to_insert.setMapPath(newPath);
+            }
+            toursModel.updateTour(tour_to_insert);
+            clearViewModel();
+            return errors;
+        }
+        return errors;
+    }
+
+    private boolean isEqualRoute(Tour tour_to_insert, Tour tour) {
+        return tour_to_insert.getDestination().equals(tour.getDestination())
+                && tour_to_insert.getStart().equals(tour.getStart());
+    }
+
+    private Tour getTourToInsert(Tour tour) {
+        return Tour.builder()
+                .id(tour.getId())
+                .destination(destination.get())
+                .start(start.get())
+                .name(name.get())
+                .distance(Integer.parseInt(distance.get()))
+                .description(description.get())
+                .build();
     }
 
     public void removeTour(Tour tour) {

@@ -5,7 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane alignment="center" hgap="10" prefHeight="300" prefWidth="300" vgap="10" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.Tours.TourEditViewController">
+<GridPane alignment="center" hgap="10" prefHeight="300" prefWidth="300" vgap="10" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.views.TourEditViewController">
 
     <columnConstraints>
         <ColumnConstraints />
@@ -45,8 +45,9 @@
     <TextField fx:id="start" prefHeight="26.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
 
     <Label GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4">End</Label>
-    <TextField fx:id="end" prefWidth="50.0" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+    <TextField fx:id="destination" prefWidth="50.0" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
 
+    <ProgressIndicator fx:id="progressStart" prefHeight="19.0" prefWidth="26.0" progress="0.0" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.rowSpan="3" GridPane.valignment="CENTER" />
 
     <ImageView fx:id="preview" GridPane.columnIndex="0" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.rowSpan="3" GridPane.valignment="CENTER"  preserveRatio="true" fitHeight="100"/>
 
