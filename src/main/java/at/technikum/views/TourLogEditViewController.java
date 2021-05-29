@@ -1,7 +1,7 @@
 package at.technikum.views;
 
-import at.technikum.model.tours.Tour;
-import at.technikum.viewmodel.CreateLogViewModel;
+import at.technikum.model.logs.Log;
+import at.technikum.viewmodel.LogEditViewModel;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
@@ -15,9 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class CreateTourLogController implements ViewController {
+public class TourLogEditViewController implements ViewController {
+
     private static final String NUMBER_ZERO_TO_TEN = "[0-9]|10";
     private static final String INTEGER = "\\d+";
+
+    public ObjectProperty<Log> selectedLog;
+
     public TextField report;
     public TextField distance;
     public TextField totalTime;
@@ -26,38 +30,44 @@ public class CreateTourLogController implements ViewController {
     public TextField typeOfTransport;
     public TextField difficulty;
     public TextField recommendedPeopleCount;
-    //public CheckBox toiletOnThePath;
     public DatePicker date;
-    private CreateLogViewModel createLogViewModel;
-    public ObjectProperty<Tour> selectedTour = new SimpleObjectProperty<>();
 
-    public void init(CreateLogViewModel createLogViewModel) {
-        this.createLogViewModel = createLogViewModel;
-        selectedTour.bindBidirectional(createLogViewModel.selectedTour);
-        report.textProperty().bindBidirectional(createLogViewModel.report);
-        distance.textProperty().bindBidirectional(createLogViewModel.distance);
-        totalTime.textProperty().bindBidirectional(createLogViewModel.totalTime);
-        rating.textProperty().bindBidirectional(createLogViewModel.rating);
-        averageSpeed.textProperty().bindBidirectional(createLogViewModel.averageSpeed);
-        typeOfTransport.textProperty().bindBidirectional(createLogViewModel.typeOfTransport);
-        difficulty.textProperty().bindBidirectional(createLogViewModel.difficulty);
-        recommendedPeopleCount.textProperty().bindBidirectional(createLogViewModel.recommendedPeopleCount);
-        //toiletOnThePath.selectedProperty().bindBidirectional(createLogViewModel.toiletOnThePath);
+
+    private LogEditViewModel logEditViewModel;
+
+    public void init(LogEditViewModel viewModel) {
+        selectedLog = new SimpleObjectProperty<>();
+        viewModel.getSelectedLog().bindBidirectional(selectedLog);
+        report.textProperty().bindBidirectional(viewModel.getReport());
+        distance.textProperty().bindBidirectional(viewModel.getDistance());
+        totalTime.textProperty().bindBidirectional(viewModel.getTotalTime());
+        rating.textProperty().bindBidirectional(viewModel.getRating());
+        averageSpeed.textProperty().bindBidirectional(viewModel.getAverageSpeed());
+        typeOfTransport.textProperty().bindBidirectional(viewModel.getTypeOfTransport());
+        difficulty.textProperty().bindBidirectional(viewModel.getDifficulty());
+        recommendedPeopleCount.textProperty().bindBidirectional(viewModel.getRecommendedPeopleCount());
+        logEditViewModel = viewModel;
+    }
+
+    public void refreshViewModel() {
+        logEditViewModel.fillViewModel();
+        date.setValue(logEditViewModel.getDate().getValue());
+    }
+
+    public void refreshDate(ActionEvent actionEvent) {
+        logEditViewModel.getDate().setValue(date.getValue());
     }
 
     public void cancelCreation(ActionEvent actionEvent) {
-        createLogViewModel.clearViewModel();
         var stage = (Stage) report.getScene().getWindow();
         stage.close();
     }
 
-    public void createLog(ActionEvent actionEvent) {
-        log.info("Creating log");
+    public void saveLog(ActionEvent actionEvent) {
         var errors = validateInput();
         if (errors.isEmpty()) {
-            log.info("Input Validation successful!");
-            createLogViewModel.createLog();
-            createLogViewModel.clearViewModel();
+            logEditViewModel.saveUpdatedViewModel();
+            selectedLog.setValue(null);
             var stage = (Stage) report.getScene().getWindow();
             stage.close();
         } else {
@@ -65,7 +75,6 @@ public class CreateTourLogController implements ViewController {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Errors with inputs: %s".formatted(String.join(", ", errors)));
             alert.showAndWait();
         }
-
     }
 
     private List<String> validateInput() {
@@ -104,9 +113,5 @@ public class CreateTourLogController implements ViewController {
 
     private boolean isEmpty(String string) {
         return string == null || string.isEmpty();
-    }
-
-    public void refreshDate(ActionEvent actionEvent) {
-        createLogViewModel.date.setValue(date.getValue());
     }
 }

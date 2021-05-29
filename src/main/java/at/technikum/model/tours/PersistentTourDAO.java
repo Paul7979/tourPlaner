@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,13 +29,16 @@ public class PersistentTourDAO implements TourDAO {
             from tour""";
 
     private static final String FILTER_FOR_TERM = """
-            WHERE name like ? or start like ? or destination like ? or description like ?""";
+            SELECT distinct tour.id, tour.name, tour.start, tour.destination, tour.distance, tour.description, path_to_picture 
+            from tour 
+            inner join logs on logs.tour_id = tour.id 
+            WHERE tour.name like ? or tour.start like ? or tour.destination like ? or tour.description like ? or logs.report like ? or logs.difficulty like ? or logs.typeoftransport like ?""";
 
     @Override
     public Tour add(Tour tour) {
         var connection = SQLConnectionProvider.getConnection();
         try {
-            var preparedStatement = connection.prepareStatement(CREATE_TOUR);
+            var preparedStatement = connection.prepareStatement(CREATE_TOUR, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, tour.getName());
             preparedStatement.setString(2, tour.getStart());
             preparedStatement.setString(3, tour.getDestination());
@@ -47,7 +51,7 @@ public class PersistentTourDAO implements TourDAO {
                 throw new SQLException("Creating failed, no rows affected");
             }
             //TODO:WHY NO ID?
-            /*ResultSet generated = preparedStatement.getGeneratedKeys();
+            ResultSet generated = preparedStatement.getGeneratedKeys();
             if (generated.next()) {
                 var id = generated.getInt(1);
                 log.info("obtained id {}", id);
@@ -56,7 +60,7 @@ public class PersistentTourDAO implements TourDAO {
                 return tour;
             } else {
                 throw new SQLException("Creating tour failed, no ID obtained.");
-            }*/
+            }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -110,7 +114,7 @@ public class PersistentTourDAO implements TourDAO {
     public List<Tour> searchFor(String term) {
         List<Tour> tours = new ArrayList<>();
         var connection = SQLConnectionProvider.getConnection();
-        try (var preparedStatement = connection.prepareStatement(GET_ALL_TOURS + " " + FILTER_FOR_TERM)) {
+        try (var preparedStatement = connection.prepareStatement(FILTER_FOR_TERM)) {
             setTerms(preparedStatement, term);
             log.debug("Search Query {}", preparedStatement);
             var resultSet = preparedStatement.executeQuery();
@@ -125,7 +129,7 @@ public class PersistentTourDAO implements TourDAO {
     }
 
     private void setTerms(PreparedStatement preparedStatement, String term) throws SQLException {
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < 8; i++) {
             preparedStatement.setString(i, "%" + term + "%");
         }
     }

@@ -3,6 +3,7 @@ package at.technikum.views;
 import at.technikum.viewmodel.CreateLogViewModel;
 import at.technikum.viewmodel.CreateTourViewModel;
 import at.technikum.viewmodel.InitViewModel;
+import at.technikum.viewmodel.LogDetailsViewModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -34,32 +35,8 @@ public class InitViewController implements ViewController{
 
     @Setter
     private InitViewModel initViewModel;
-/*
-    @FXML
-    public ProgressIndicator progressStart;
 
-    @FXML
-    public ProgressIndicator progressDestination;
-
-    @FXML
-    public ListView<String> listView;
-
-    @FXML
-    public TextField startLocation;
-
-    @FXML
-    public TextField destinationLocation;
-
-    public void init(InitViewModel initViewModel) {
-        this.initViewModel = initViewModel;
-        listView.itemsProperty().bind(initViewModel.getListProperty());
-        startLocation.textProperty().bindBidirectional(initViewModel.getQueryParamStart());
-        destinationLocation.textProperty().bindBidirectional(initViewModel.getQueryParamDestination());
-        progressStart.visibleProperty().bindBidirectional(initViewModel.getInProgressStart());
-        progressDestination.visibleProperty().bindBidirectional(initViewModel.getInProgressDestination());
-    }*/
-
-    public void init(InitViewModel initViewModel, CreateLogViewModel createLogViewModel, CreateTourViewModel createTourViewModel) {
+    public void init(InitViewModel initViewModel, CreateLogViewModel createLogViewModel, CreateTourViewModel createTourViewModel, LogDetailsViewModel logDetailsViewModel) {
         this.initViewModel = initViewModel;
 
         initViewModel.setTours(toursSidebarViewController.toursListView.getItems());
@@ -69,7 +46,7 @@ public class InitViewController implements ViewController{
         initViewModel.getSelectedTour().bindBidirectional(toursSidebarViewController.selectedTour);
         tourLogsViewController.selectedTour.bindBidirectional(toursSidebarViewController.selectedTour);
         createLogViewModel.selectedLog.bindBidirectional(tourLogsViewController.selectedLog);
-
+        tourLogsViewController.selectedLog.bindBidirectional(logDetailsViewModel.getSelectedLog());
 
         tourLogsViewController.setCreateLogViewModel(createLogViewModel);
         toursSidebarViewController.setCreateTourViewModel(createTourViewModel);
@@ -102,10 +79,13 @@ public class InitViewController implements ViewController{
 
     public void importData(ActionEvent actionEvent) {
         log.info("Importing Data");
+        initViewModel.importData();
+        initViewModel.modelOrSearchChanged();
     }
 
     public void exportData(ActionEvent actionEvent) {
         log.info("Exporting Data");
+        initViewModel.exportData();
     }
 
     public void generateReport(ActionEvent actionEvent) {

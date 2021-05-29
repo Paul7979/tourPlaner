@@ -34,7 +34,7 @@ public class ToursSidebarViewController implements Initializable {
 
     public void addNewTour(ActionEvent actionEvent) throws IOException {
         log.info("Adding new tour");
-        ViewHandler.openView("createTour", new Stage(), "Create Tour");
+        ViewHandler.openView(ViewHandler.CREATE_TOUR, new Stage(), "Create Tour");
     }
 
     public void removeTour(ActionEvent actionEvent) {

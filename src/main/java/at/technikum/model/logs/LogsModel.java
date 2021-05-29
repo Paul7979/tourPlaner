@@ -39,6 +39,12 @@ public class LogsModel {
 
     public void removeLog(Log log) {
         logDAO.removeLog(log);
+        selectedTourChangedCallback.forEach(Runnable::run);
+    }
+
+    public void updateLog(Log log) {
+        logDAO.updateLog(log);
+        selectedTourChangedCallback.forEach(Runnable::run);
     }
 
     public void addSelectedToursChangedCallback(Runnable callback) {

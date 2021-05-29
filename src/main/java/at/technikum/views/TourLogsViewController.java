@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -34,20 +36,28 @@ public class TourLogsViewController implements Initializable {
 
     public ListView<Log> logsListView;
 
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd MM yyyy");
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         log.info("Initialized!");
-
+        setUpListView();
     }
 
     public void addNewLog(ActionEvent actionEvent) throws IOException {
         log.info("adding log");
-        var createTourLogController = (CreateTourLogController) ViewHandler.openView("createTourLog", new Stage(), "Create Log");
+        var createTourLogController = (CreateTourLogController) ViewHandler.openView(ViewHandler.CREATE_TOUR_LOG, new Stage(), "Create Log");
         createTourLogController.selectedTour.bindBidirectional(selectedTour);
     }
 
-    public void showLog(ActionEvent actionEvent) {
-        log.info("showing log");
+    public void showLog(ActionEvent actionEvent) throws IOException {
+        log.info("showing log details");
+        if (selectedLog.get() != null) {
+            ViewHandler.openView(ViewHandler.DETAILS_TOUR_LOG, new Stage(), "Log Detail");
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Please select a log to show");
+            alert.showAndWait();
+        }
     }
 
     public void removeLog(ActionEvent actionEvent) {
@@ -56,8 +66,17 @@ public class TourLogsViewController implements Initializable {
 
     }
 
-    public void editLog(ActionEvent actionEvent) {
+    public void editLog(ActionEvent actionEvent) throws IOException {
         log.info("editing log");
+        if (selectedLog.get() != null) {
+            var editViewController = (TourLogEditViewController) ViewHandler.openView(ViewHandler.EDIT_TOUR_LOG, new Stage(), "Edit Log");
+            editViewController.selectedLog.setValue(selectedLog.getValue());
+            editViewController.refreshViewModel();
+            selectedLog.setValue(null);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Please select a log to edit");
+            alert.showAndWait();
+        }
     }
 
     public void selectedLog(MouseEvent mouseEvent) {
@@ -72,7 +91,7 @@ public class TourLogsViewController implements Initializable {
                 if (empty || item == null || item.getId() == 0)
                     setText(null);
                 else {
-                    setText(item.getReport() + " | " + item.getReport());
+                    setText(item.getDate().format(dateTimeFormatter) + " | " + item.getReport());
                 }
             }
         });

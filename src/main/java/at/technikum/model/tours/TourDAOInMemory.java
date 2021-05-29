@@ -45,7 +45,7 @@ public class TourDAOInMemory implements TourDAO {
     public List<Tour> searchFor(String term) {
         String searchTerm = term.toLowerCase();
         return tours.parallelStream()
-                .filter(hay -> hay.getFullTextSearchString().contains(searchTerm))
+                //.filter(hay -> hay.getFullTextSearchString().contains(searchTerm))
                 .collect(Collectors.toList());
     }
 

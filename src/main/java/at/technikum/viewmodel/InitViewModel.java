@@ -1,16 +1,22 @@
 package at.technikum.viewmodel;
 
 import at.technikum.model.ModelFactory;
+import at.technikum.model.importexport.ExportService;
+import at.technikum.model.importexport.ImportService;
 import at.technikum.model.logs.Log;
 import at.technikum.model.logs.LogsModel;
 import at.technikum.model.tours.Tour;
 import at.technikum.model.tours.ToursModel;
+import at.technikum.util.TaskExecutorService;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +29,9 @@ public class InitViewModel {
     private final ToursModel toursModel;
 
     private final LogsModel logsModel;
+
+    private final ExportService exportService;
+    private final ImportService importService;
 
     private ObservableList<Tour> tours;
 
@@ -39,7 +48,8 @@ public class InitViewModel {
     private StringProperty fullTextSearch = new SimpleStringProperty();
 
     public InitViewModel(ModelFactory modelFactory) {
-        //this.modelFactory = modelFactory;
+        exportService = modelFactory.getExportService();
+        importService = modelFactory.getImportService();
         toursModel = modelFactory.getToursModel();
         logsModel = modelFactory.getLogsModel();
 
@@ -70,5 +80,39 @@ public class InitViewModel {
             return;
         }
         tours.addAll(toursModel.getAllFullTextSearch(fullTextSearch));
+    }
+
+    public void importData() {
+        FileChooser fileChooser = new FileChooser();
+        var file = fileChooser.showOpenDialog(new Stage());
+        if (file != null) {
+            var start = System.currentTimeMillis();
+            var importFromFile = importService.importFromFile(file);
+            log.info("Imported tours in {}ms", System.currentTimeMillis() - start);
+            Alert alert;
+            if (!importFromFile) {
+                alert = new Alert(Alert.AlertType.WARNING, "Import failed, try again!");
+            } else {
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Import successful!");
+            }
+            alert.showAndWait();
+        }
+    }
+
+    public void exportData() {
+        FileChooser fileChooser = new FileChooser();
+        var file = fileChooser.showSaveDialog(new Stage());
+        if (file != null) {
+            var exportToFile = exportService.exportToFile(file);
+            TaskExecutorService.execute(exportToFile);
+            exportToFile.setOnFailed(workerStateEvent -> {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Export failed unexpectedly, try again");
+                alert.showAndWait();
+            });
+            exportToFile.setOnSucceeded(workerStateEvent -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Export successful");
+                alert.showAndWait();
+            });
+        }
     }
 }

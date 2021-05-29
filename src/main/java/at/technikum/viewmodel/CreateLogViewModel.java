@@ -4,8 +4,13 @@ import at.technikum.model.ModelFactory;
 import at.technikum.model.logs.Log;
 import at.technikum.model.logs.LogsModel;
 import at.technikum.model.tours.Tour;
-import javafx.beans.property.*;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import lombok.extern.slf4j.Slf4j;
+
+import java.time.LocalDate;
 
 @Slf4j
 public class CreateLogViewModel {
@@ -18,7 +23,8 @@ public class CreateLogViewModel {
     public StringProperty typeOfTransport;
     public StringProperty difficulty;
     public StringProperty recommendedPeopleCount;
-    public BooleanProperty toiletOnThePath;
+    //public BooleanProperty toiletOnThePath;
+    public ObjectProperty<LocalDate> date;
 
     public ObjectProperty<Tour> selectedTour = new SimpleObjectProperty<>();
     public ObjectProperty<Log> selectedLog = new SimpleObjectProperty<>();
@@ -34,7 +40,8 @@ public class CreateLogViewModel {
         typeOfTransport = new SimpleStringProperty();
         difficulty = new SimpleStringProperty();
         recommendedPeopleCount = new SimpleStringProperty();
-        toiletOnThePath = new SimpleBooleanProperty();
+        //toiletOnThePath = new SimpleBooleanProperty();
+        date = new SimpleObjectProperty<>();
     }
 
     public void clearViewModel() {
@@ -46,6 +53,7 @@ public class CreateLogViewModel {
         typeOfTransport.setValue("");
         difficulty.setValue("");
         recommendedPeopleCount.setValue("");
+        date.setValue(LocalDate.now());
     }
 
     public void createLog() {
@@ -58,6 +66,7 @@ public class CreateLogViewModel {
                 .typeOfTransport(typeOfTransport.get())
                 .difficulty(difficulty.get())
                 .recommendedPeopleCount(Integer.parseInt(recommendedPeopleCount.get()))
+                .date(date.get())
                 .build();
         var tour = selectedTour.get();
 

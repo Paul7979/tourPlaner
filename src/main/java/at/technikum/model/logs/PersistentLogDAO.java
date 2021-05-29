@@ -4,6 +4,7 @@ import at.technikum.model.tours.Tour;
 import at.technikum.util.SQLConnectionProvider;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,15 +16,19 @@ import java.util.Optional;
 public class PersistentLogDAO implements LogDAO {
 
     private static final String INSERT_LOG_FOR_TOUR = """
-            INSERT into logs (tour_id, report, distance, totaltime, rating, averagespeed, typeoftransport, difficulty, recommendedpeoplecount, toiletonthepath) 
+            INSERT into logs (tour_id, report, distance, totaltime, rating, averagespeed, typeoftransport, difficulty, recommendedpeoplecount, date) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""";
 
+    private static final String UPDATE_LOG = """
+            UPDATE logs SET report = ?, distance = ?, totaltime = ?,  rating = ?, averagespeed = ?, typeoftransport = ?, difficulty = ?, recommendedpeoplecount = ?, date = ? 
+            WHERE id = ?;""";
+
     private static final String GET_LOGS_FOR_TOUR = """
-            SELECT id, tour_id, report, distance, totaltime, rating, averagespeed, typeoftransport, difficulty, recommendedpeoplecount, toiletonthepath
-            from logs where tour_id = ?""";
+            SELECT id, tour_id, report, distance, totaltime, rating, averagespeed, typeoftransport, difficulty, recommendedpeoplecount, date
+            from logs where tour_id = ? ORDER BY date""";
 
     private static final String DELETE_LOG = """
-            """;
+            DELETE from logs where id = ?""";
 
     @Override
     public void addLogForTour(Tour tour, Log log_in) {
@@ -52,7 +57,7 @@ public class PersistentLogDAO implements LogDAO {
         preparedStatement.setString(7, log_in.getTypeOfTransport());
         preparedStatement.setString(8, log_in.getDifficulty());
         preparedStatement.setInt(9, log_in.getRecommendedPeopleCount());
-        preparedStatement.setBoolean(10, log_in.isToiletOnThePath());
+        preparedStatement.setDate(10, Date.valueOf(log_in.getDate()));
     }
 
     @Override
@@ -86,7 +91,7 @@ public class PersistentLogDAO implements LogDAO {
                 .typeOfTransport(resultSet.getString("typeoftransport"))
                 .difficulty(resultSet.getString("difficulty"))
                 .recommendedPeopleCount(resultSet.getInt("recommendedpeoplecount"))
-                .toiletOnThePath(resultSet.getBoolean("toiletonthepath"))
+                .date(resultSet.getDate("date").toLocalDate())
                 .build();
     }
 
@@ -102,8 +107,34 @@ public class PersistentLogDAO implements LogDAO {
             }
             SQLConnectionProvider.releaseConnection(connection);
         } catch (SQLException throwables) {
-            log.error("Could not delete logs for log {}", log_in, throwables);
+            log.error("Could not delete log {}", log_in, throwables);
             SQLConnectionProvider.releaseConnection(connection);
         }
+    }
+
+    public void updateLog (Log log_in) {
+        var connection = SQLConnectionProvider.getConnection();
+        try {
+            var preparedStatement = connection.prepareStatement(UPDATE_LOG);
+            preparedStatement.setString(1, log_in.getReport());
+            preparedStatement.setString(2, log_in.getDistance());
+            preparedStatement.setString(3, log_in.getTotalTime());
+            preparedStatement.setInt(4, log_in.getRating());
+            preparedStatement.setString(5, log_in.getAverageSpeed());
+            preparedStatement.setString(6, log_in.getTypeOfTransport());
+            preparedStatement.setString(7, log_in.getDifficulty());
+            preparedStatement.setInt(8, log_in.getRecommendedPeopleCount());
+            preparedStatement.setDate(9, Date.valueOf(log_in.getDate()));
+            preparedStatement.setInt(10, log_in.getId());
+            var i = preparedStatement.executeUpdate();
+            if (i == 0) {
+                throw new SQLException("No row affected when updating log");
+            }
+            SQLConnectionProvider.releaseConnection(connection);
+        } catch (SQLException throwables) {
+            log.error("Could not update log {}", log_in, throwables);
+            SQLConnectionProvider.releaseConnection(connection);
+        }
+
     }
 }

@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="center" hgap="10" prefHeight="300" prefWidth="300" vgap="10" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.views.CreateTourLogController">
+<GridPane alignment="center" hgap="10" prefHeight="300" prefWidth="300" vgap="10" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.views.CreateTourLogController">
 
     <columnConstraints>
-        <ColumnConstraints />
-        <ColumnConstraints hgrow="ALWAYS" />
+        <ColumnConstraints minWidth="-Infinity" />
+        <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" />
         <ColumnConstraints />
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
@@ -50,7 +54,7 @@
     <TextField fx:id="averageSpeed" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
 
     <Label GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="6">Type of Transport</Label>
-    <TextField fx:id="typeOfTransport" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="6" text="" />
+    <TextField fx:id="typeOfTransport" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="6" />
 
     <Label GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="7">Difficulty</Label>
     <TextField fx:id="difficulty" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="7" />
@@ -58,8 +62,7 @@
     <Label GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="8">Recommended People</Label>
     <TextField fx:id="recommendedPeopleCount" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="8" />
 
-    <Label GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="9">Toilet On the Path</Label>
-    <CheckBox fx:id="toiletOnThePath" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="9" />
+    <Label text="Date" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="9">Toilet On the Path</Label>
 
     <GridPane GridPane.columnIndex="0" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER">
         <columnConstraints>
@@ -75,5 +78,6 @@
         <Button fx:id="createButton" onAction="#createLog" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">Create</Button>
 
     </GridPane>
+   <DatePicker fx:id="date" onAction="#refreshDate" GridPane.columnIndex="1" GridPane.rowIndex="9" />
 
 </GridPane>

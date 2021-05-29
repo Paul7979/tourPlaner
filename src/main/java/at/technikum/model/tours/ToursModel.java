@@ -73,7 +73,7 @@ public class ToursModel {
             return new Image(new FileInputStream(mapPath));
         } catch (FileNotFoundException e) {
             log.error("Fallback to not_found");
-            return new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("not_found.jpg")));
+            return new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/not_found.jpg")));
         }
     }
 

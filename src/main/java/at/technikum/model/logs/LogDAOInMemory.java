@@ -41,6 +41,11 @@ public class LogDAOInMemory implements LogDAO {
     }
 
     @Override
+    public void updateLog(Log log) {
+        throw new IllegalStateException("Not implemented");
+    }
+
+    @Override
     public Optional<List<Log>> getLogsFor(Tour tour) {
         return Optional.ofNullable(logsForTour.get(tour));
     }

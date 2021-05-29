@@ -12,4 +12,6 @@ public interface LogDAO {
     Optional<List<Log>> getLogsFor(Tour tour);
 
     void removeLog(Log log);
+
+    void updateLog(Log log);
 }
