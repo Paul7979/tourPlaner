@@ -1,7 +1,6 @@
 package at.technikum.client.forwardsearch;
 
-import at.technikum.model.Location;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import at.technikum.model.location.Location;
 
 import java.util.List;
 import java.util.stream.Collectors;

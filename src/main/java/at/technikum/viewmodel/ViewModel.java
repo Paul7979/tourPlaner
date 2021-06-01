@@ -1,4 +1,4 @@
 package at.technikum.viewmodel;
 
-public interface IViewModel {
+public interface ViewModel {
 }

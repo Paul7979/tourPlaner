@@ -1,4 +1,4 @@
-package at.technikum.model;
+package at.technikum.model.location;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

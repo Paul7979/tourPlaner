@@ -34,7 +34,6 @@ public class RoutePlanner extends Application {
         SQLConnectionProvider.initialize();
         var modelFactory = new ModelFactory();
         var viewModelFactory = new ViewModelFactory(modelFactory);
-        //var viewHandler = new ViewHandler(viewModelFactory);
         ViewHandler.setViewModelFactory(viewModelFactory);
         ViewHandler.start(stage);
     }

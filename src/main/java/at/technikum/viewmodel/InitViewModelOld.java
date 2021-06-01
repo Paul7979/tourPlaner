@@ -1,7 +1,7 @@
 package at.technikum.viewmodel;
 
-import at.technikum.model.ILocationRepository;
-import at.technikum.model.Location;
+import at.technikum.model.location.ILocationRepository;
+import at.technikum.model.location.Location;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import lombok.Getter;

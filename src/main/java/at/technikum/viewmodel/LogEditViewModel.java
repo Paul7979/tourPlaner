@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Getter
-public class LogEditViewModel implements IViewModel {
+public class LogEditViewModel implements ViewModel {
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd MM yyyy");
 

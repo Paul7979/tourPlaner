@@ -1,9 +1,8 @@
-package at.technikum.model;
+package at.technikum.model.location;
 
 import at.technikum.client.forwardsearch.ForwardSearchClient;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 

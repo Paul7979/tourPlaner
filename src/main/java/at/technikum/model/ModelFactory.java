@@ -3,6 +3,8 @@ package at.technikum.model;
 import at.technikum.client.mapsearch.MapSearchService;
 import at.technikum.model.importexport.ExportService;
 import at.technikum.model.importexport.ImportService;
+import at.technikum.model.location.ILocationRepository;
+import at.technikum.model.location.MapQuestLocationRepository;
 import at.technikum.model.logs.LogsModel;
 import at.technikum.model.logs.PersistentLogDAO;
 import at.technikum.model.tours.PersistentTourDAO;

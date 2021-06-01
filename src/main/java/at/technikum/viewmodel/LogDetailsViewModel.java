@@ -13,7 +13,7 @@ import lombok.Getter;
 import java.time.format.DateTimeFormatter;
 
 @Getter
-public class LogDetailsViewModel implements IViewModel {
+public class LogDetailsViewModel implements ViewModel {
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd MM yyyy");
 
