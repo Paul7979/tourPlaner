@@ -1,5 +1,7 @@
 package at.technikum.model.tours;
 
+import at.technikum.dal.tours.PersistentTourDAO;
+import at.technikum.dal.tours.TourDAO;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;

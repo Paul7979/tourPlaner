@@ -26,7 +26,6 @@ public class CreateTourLogController implements ViewController {
     public TextField typeOfTransport;
     public TextField difficulty;
     public TextField recommendedPeopleCount;
-    //public CheckBox toiletOnThePath;
     public DatePicker date;
     private CreateLogViewModel createLogViewModel;
     public ObjectProperty<Tour> selectedTour = new SimpleObjectProperty<>();
@@ -68,7 +67,7 @@ public class CreateTourLogController implements ViewController {
 
     }
 
-    private List<String> validateInput() {
+    List<String> validateInput() {
         List<String> errors = new ArrayList<>();
         if (isEmpty(report.textProperty().get())) {
             errors.add("Report");

@@ -7,7 +7,6 @@ import at.technikum.model.logs.Log;
 import at.technikum.model.logs.LogsModel;
 import at.technikum.model.tours.Tour;
 import at.technikum.model.tours.ToursModel;
-import at.technikum.util.TaskExecutorService;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,6 +19,8 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
 
 @Getter
 @Setter
@@ -103,16 +104,15 @@ public class InitViewModel {
         FileChooser fileChooser = new FileChooser();
         var file = fileChooser.showSaveDialog(new Stage());
         if (file != null) {
-            var exportToFile = exportService.exportToFile(file);
-            TaskExecutorService.execute(exportToFile);
-            exportToFile.setOnFailed(workerStateEvent -> {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Export failed unexpectedly, try again");
-                alert.showAndWait();
-            });
-            exportToFile.setOnSucceeded(workerStateEvent -> {
+            try {
+                exportService.exportToFile(file);
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Export successful");
                 alert.showAndWait();
-            });
+            } catch (IOException e) {
+                log.error("Failed to export", e);
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Export failed unexpectedly, try again");
+                alert.showAndWait();
+            }
         }
     }
 }

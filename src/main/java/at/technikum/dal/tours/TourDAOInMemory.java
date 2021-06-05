@@ -1,4 +1,6 @@
-package at.technikum.model.tours;
+package at.technikum.dal.tours;
+
+import at.technikum.model.tours.Tour;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,6 @@
-package at.technikum.model.logs;
+package at.technikum.dal.logs;
 
+import at.technikum.model.logs.Log;
 import at.technikum.model.tours.Tour;
 
 import java.util.ArrayList;

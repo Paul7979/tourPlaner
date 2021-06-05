@@ -1,25 +1,25 @@
 package at.technikum.model.importexport;
 
-import at.technikum.model.logs.PersistentLogDAO;
-import at.technikum.model.tours.PersistentTourDAO;
+import at.technikum.dal.logs.LogDAO;
+import at.technikum.dal.tours.TourDAO;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import javafx.concurrent.Task;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class ExportService {
 
-    private final PersistentTourDAO persistentTourDAO;
-    private final PersistentLogDAO logDAO;
+    private final TourDAO persistentTourDAO;
+    private final LogDAO logDAO;
 
-    private final ObjectMapper objectMapper = new ObjectMapper().configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
+    private ObjectMapper objectMapper = new ObjectMapper().configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
 
 
-    public ExportService(PersistentLogDAO persistentLogDAO, PersistentTourDAO persistentTourDAO) {
+    public ExportService(LogDAO persistentLogDAO, TourDAO persistentTourDAO) {
         this.persistentTourDAO = persistentTourDAO;
         this.logDAO = persistentLogDAO;
         objectMapper.findAndRegisterModules();
@@ -27,23 +27,17 @@ public class ExportService {
         objectMapper.setDateFormat(new SimpleDateFormat("dd-MM-yyyy"));
     }
 
-    public Task<String> exportToFile(File file) {
-        return new Task<>() {
-            @Override
-            protected String call() throws Exception {
-                TourExportWrapper tourExportWrapper = new TourExportWrapper();
-                var allTours = persistentTourDAO.getAll();
-                allTours.forEach(tour -> {
-                    var logsFor = logDAO.getLogsFor(tour);
-                    var tourExportContainer = TourExportContainer.builder()
-                            .tour(tour)
-                            .logs(logsFor.orElse(new ArrayList<>()))
-                            .build();
-                    tourExportWrapper.addContainer(tourExportContainer);
-                });
-                objectMapper.writeValue(file, tourExportWrapper);
-                return "";
-            }
-        };
+    public void exportToFile(File file) throws IOException {
+        TourExportWrapper tourExportWrapper = new TourExportWrapper();
+        var allTours = persistentTourDAO.getAll();
+        allTours.forEach(tour -> {
+            var logsFor = logDAO.getLogsFor(tour);
+            var tourExportContainer = TourExportContainer.builder()
+                    .tour(tour)
+                    .logs(logsFor.orElse(new ArrayList<>()))
+                    .build();
+            tourExportWrapper.addContainer(tourExportContainer);
+        });
+        objectMapper.writeValue(file, tourExportWrapper);
     }
 }

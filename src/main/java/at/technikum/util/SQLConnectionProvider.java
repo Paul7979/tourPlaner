@@ -16,7 +16,7 @@ public class SQLConnectionProvider {
 
     public static void initialize() throws SQLException, ClassNotFoundException {
         for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
-            connectionPool.add(createConnection(AppProperties.getDB_URL(),AppProperties.getDB_USER(), AppProperties.getDB_PASSWORD()));
+            connectionPool.add(createConnection(AppProperties.getDB_URL(), AppProperties.getDB_USER(), AppProperties.getDB_PASSWORD()));
         }
     }
 

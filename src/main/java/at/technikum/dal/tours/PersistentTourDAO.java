@@ -1,5 +1,6 @@
-package at.technikum.model.tours;
+package at.technikum.dal.tours;
 
+import at.technikum.model.tours.Tour;
 import at.technikum.util.SQLConnectionProvider;
 import lombok.extern.slf4j.Slf4j;
 

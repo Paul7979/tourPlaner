@@ -6,8 +6,8 @@ import at.technikum.model.importexport.ImportService;
 import at.technikum.model.location.ILocationRepository;
 import at.technikum.model.location.MapQuestLocationRepository;
 import at.technikum.model.logs.LogsModel;
-import at.technikum.model.logs.PersistentLogDAO;
-import at.technikum.model.tours.PersistentTourDAO;
+import at.technikum.dal.logs.PersistentLogDAO;
+import at.technikum.dal.tours.PersistentTourDAO;
 import at.technikum.model.tours.ToursModel;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class ModelFactory {
 
     public ImportService getImportService() {
         if (importService == null) {
-            importService = new ImportService(new PersistentTourDAO(), new PersistentLogDAO());
+            importService = new ImportService(new PersistentTourDAO(), new PersistentLogDAO(), MapSearchService.getInstance());
         }
         return importService;
     }

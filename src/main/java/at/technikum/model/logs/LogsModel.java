@@ -1,5 +1,7 @@
 package at.technikum.model.logs;
 
+import at.technikum.dal.logs.LogDAO;
+import at.technikum.dal.logs.PersistentLogDAO;
 import at.technikum.model.tours.Tour;
 import lombok.extern.slf4j.Slf4j;
 
