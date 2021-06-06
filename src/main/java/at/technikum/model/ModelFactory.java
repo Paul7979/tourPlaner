@@ -1,6 +1,7 @@
 package at.technikum.model;
 
 import at.technikum.client.mapsearch.MapSearchService;
+import at.technikum.client.route.RouteSearchService;
 import at.technikum.model.importexport.ExportService;
 import at.technikum.model.importexport.ImportService;
 import at.technikum.model.location.ILocationRepository;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ModelFactory {
     private ILocationRepository locationModel;
     private MapSearchService mapSearchService;
+    private RouteSearchService routeSearchService;
     private ToursModel toursModel;
     private LogsModel logsModel;
     private ExportService exportService;
@@ -29,6 +31,10 @@ public class ModelFactory {
             locationModel = new MapQuestLocationRepository();
         }
         return locationModel;
+    }
+
+    public RouteSearchService getRouteSearchService() {
+        return RouteSearchService.getInstance();
     }
 
     public ExportService getExportService() {

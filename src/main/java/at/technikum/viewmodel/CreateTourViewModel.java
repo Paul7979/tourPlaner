@@ -1,10 +1,12 @@
 package at.technikum.viewmodel;
 
 import at.technikum.client.mapsearch.MapSearchService;
+import at.technikum.client.route.RouteSearchService;
 import at.technikum.model.ModelFactory;
 import at.technikum.model.tours.Tour;
 import at.technikum.model.tours.ToursModel;
 import at.technikum.util.TaskExecutorService;
+import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -19,6 +21,7 @@ import java.util.List;
 public class CreateTourViewModel {
 
     private final MapSearchService searchService;
+    private final RouteSearchService routeSearchService;
 
     private final BooleanProperty inProgress;
 
@@ -35,6 +38,7 @@ public class CreateTourViewModel {
 
     public CreateTourViewModel(ModelFactory modelFactory) {
         searchService = modelFactory.getMapSearchService();
+        routeSearchService = modelFactory.getRouteSearchService();
         toursModel = modelFactory.getToursModel();
         inProgress = new SimpleBooleanProperty(false);
         start = new SimpleStringProperty();
@@ -54,6 +58,9 @@ public class CreateTourViewModel {
             TaskExecutorService.execute(imageTask);
             imageTask.setOnSucceeded(workerStateEvent -> {
                 preview.setValue(imageTask.getValue());
+                Platform.runLater(() -> {
+                    distance.setValue(String.valueOf(fetchDistance()));
+                });
             });
             imageTask.setOnFailed(workerStateEvent -> {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "No Route Found :(");
@@ -67,6 +74,7 @@ public class CreateTourViewModel {
     }
 
     public List<String> createTour() {
+        distance.setValue(String.valueOf(fetchDistance()));
         var errors = validateInputForTour();
         if (errors.isEmpty()) {
             var path = searchService.searchMapFullSizeBlocking(start.get(), destination.get());
@@ -89,6 +97,18 @@ public class CreateTourViewModel {
         return errors;
     }
 
+    private int fetchDistance() {
+        int distanceFor = -1;
+        try {
+            distanceFor = routeSearchService.getDistanceFor(start.get(), destination.get());
+        } catch (Exception e) {
+            log.error("Error Fetching Distance");
+            Alert alert = new Alert(Alert.AlertType.WARNING, "No Distance Found :(");
+            alert.showAndWait();
+        }
+        return distanceFor;
+    }
+
     public List<String> updateTour(Tour tour) {
         var errors = validateInputForTour();
         if (errors.isEmpty()) {
@@ -104,6 +124,12 @@ public class CreateTourViewModel {
                 var newPath = pathOptional.get();
                 log.info("New Path is {}", newPath);
                 tour_to_insert.setMapPath(newPath);
+                var distance = fetchDistance();
+                if (distance < 0) {
+                    errors.add("Error Fetching distance");
+                    return errors;
+                }
+                tour_to_insert.setDistance(distance);
             }
             toursModel.updateTour(tour_to_insert);
             clearViewModel();

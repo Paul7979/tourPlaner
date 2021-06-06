@@ -59,6 +59,7 @@ public class CreateTourViewController implements Initializable, ViewController {
         preview.imageProperty().bindBidirectional(createTourViewModel.getPreview());
         description.textProperty().bindBidirectional(createTourViewModel.getDescription());
         distance.textProperty().bindBidirectional(createTourViewModel.getDistance());
+        distance.setEditable(false);
         preview.visibleProperty().bindBidirectional(createTourViewModel.getImageVisible());
         name.textProperty().bindBidirectional(createTourViewModel.getName());
     }

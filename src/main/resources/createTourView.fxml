@@ -38,7 +38,7 @@
     <TextField fx:id="description" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
 
     <Label GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="3">Distance</Label>
-    <TextField fx:id="distance" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
+    <TextField fx:id="distance" disable="true" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
 
     <Label GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="4">Start</Label>
     <TextField fx:id="start" prefHeight="26.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
