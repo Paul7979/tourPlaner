@@ -46,8 +46,13 @@ public class TourLogsViewController implements Initializable {
 
     public void addNewLog(ActionEvent actionEvent) throws IOException {
         log.info("adding log");
-        var createTourLogController = (CreateTourLogController) ViewHandler.openView(ViewHandler.CREATE_TOUR_LOG, new Stage(), "Create Log");
-        createTourLogController.selectedTour.bindBidirectional(selectedTour);
+        if (selectedTour.get() != null) {
+            var createTourLogController = (CreateTourLogController) ViewHandler.openView(ViewHandler.CREATE_TOUR_LOG, new Stage(), "Create Log");
+            createTourLogController.selectedTour.bindBidirectional(selectedTour);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "No tour selected");
+            alert.showAndWait();
+        }
     }
 
     public void showLog(ActionEvent actionEvent) throws IOException {
@@ -62,7 +67,9 @@ public class TourLogsViewController implements Initializable {
 
     public void removeLog(ActionEvent actionEvent) {
         log.info("removing log");
-        createLogViewModel.removeLog(selectedLog.get());
+        if (selectedLog.get() != null)  {
+            createLogViewModel.removeLog(selectedLog.get());
+        }
 
     }
 

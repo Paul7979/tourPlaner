@@ -15,4 +15,10 @@ public interface LogDAO {
     void removeLog(Log log);
 
     void updateLog(Log log);
+
+    int getAvgRatingFor(Tour tour);
+
+    int getAvgDifficultyFor(Tour tour);
+
+    int getTotalDistanceFor(Tour tour);
 }

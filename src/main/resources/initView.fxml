@@ -40,18 +40,12 @@
 
     <MenuBar GridPane.columnIndex="0" GridPane.columnSpan="7" GridPane.rowIndex="1">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem onAction="#generateReport" mnemonicParsing="false" text="Save as PDF"/>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-            <MenuItem mnemonicParsing="false" text="UNDO"/>
-            <MenuItem mnemonicParsing="false" text="REDO"/>
+            <MenuItem onAction="#generateReport" mnemonicParsing="false" text="Save all as PDF"/>
+            <MenuItem onAction="#generateSingleReport" mnemonicParsing="false" text="Save selected tour as PDF"/>
         </Menu>
         <Menu mnemonicParsing="false" text="Options">
             <MenuItem onAction="#exportData" mnemonicParsing="false" text="Export as JSON"/>
             <MenuItem onAction="#importData" mnemonicParsing="false" text="Import as JSON"/>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-            <MenuItem mnemonicParsing="false" text="About"/>
         </Menu>
     </MenuBar>
 

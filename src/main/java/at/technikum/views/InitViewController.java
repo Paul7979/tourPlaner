@@ -9,8 +9,6 @@ import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -64,18 +62,6 @@ public class InitViewController implements ViewController{
         searchString.bindBidirectional(tourLogsViewController.searchString);
     }
 
-    public void onKeyReleasedStart(KeyEvent keyEvent) {
-        //initViewModel.queryStartLocation();
-    }
-
-    public void elementClicked(MouseEvent mouseEvent) {
-        //log.info("Picked {}", listView.getSelectionModel().getSelectedItem());
-    }
-
-    public void onKeyReleasedDestination(KeyEvent keyEvent) {
-        //initViewModel.queryDestinationLocation();
-    }
-
     public void importData(ActionEvent actionEvent) {
         log.info("Importing Data");
         initViewModel.importData();
@@ -89,5 +75,11 @@ public class InitViewController implements ViewController{
 
     public void generateReport(ActionEvent actionEvent) {
         log.info("Generating Report");
+        initViewModel.generateFullReport();
+    }
+
+    public void generateSingleReport(ActionEvent actionEvent) {
+        log.info("Generation single Report");
+        initViewModel.generateSingleReport();
     }
 }

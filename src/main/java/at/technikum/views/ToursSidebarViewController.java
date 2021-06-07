@@ -40,7 +40,15 @@ public class ToursSidebarViewController implements Initializable {
 
     public void removeTour(ActionEvent actionEvent) {
         log.info("removing tour");
-        createTourViewModel.removeTour(selectedTour.get());
+
+        var tour = selectedTour.get();
+        if (tour != null) {
+            createTourViewModel.removeTour(tour);
+            selectedTour.setValue(null);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Please select tour to remove.");
+            alert.showAndWait();
+        }
     }
 
     public void editTour(ActionEvent actionEvent) throws IOException {

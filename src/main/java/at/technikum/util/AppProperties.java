@@ -27,7 +27,12 @@ public class AppProperties {
         DB_URL = properties.getProperty("DB_URL");
         DB_PASSWORD = properties.getProperty("DB_PASSWORD");
         DB_USER = properties.getProperty("DB_USER");
-        CONNECTION_POOL_SIZE = Integer.valueOf(properties.getProperty("CONNECTION_POOL_SIZE"));
+        try {
+            CONNECTION_POOL_SIZE = Integer.valueOf(properties.getProperty("CONNECTION_POOL_SIZE"));
+        } catch (NumberFormatException e) {
+            log.error("Wrong config for Connection Pool, set CONNECTION_POOL_SIZE to integer");
+            return false;
+        }
         if (!allParamsValid(DB_PASSWORD, DB_URL, DB_USER)) {
             var fields = Arrays.stream(AppProperties.class.getDeclaredFields()).map(Field::getName).collect(Collectors.joining(", "));
             fields = fields.replace("log, ", "");

@@ -5,8 +5,10 @@ import at.technikum.model.importexport.ExportService;
 import at.technikum.model.importexport.ImportService;
 import at.technikum.model.logs.Log;
 import at.technikum.model.logs.LogsModel;
+import at.technikum.model.report.ReportService;
 import at.technikum.model.tours.Tour;
 import at.technikum.model.tours.ToursModel;
+import com.itextpdf.text.DocumentException;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,6 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @Getter
@@ -33,6 +36,8 @@ public class InitViewModel {
 
     private final ExportService exportService;
     private final ImportService importService;
+
+    private final ReportService reportService;
 
     private ObservableList<Tour> tours;
 
@@ -53,6 +58,7 @@ public class InitViewModel {
         importService = modelFactory.getImportService();
         toursModel = modelFactory.getToursModel();
         logsModel = modelFactory.getLogsModel();
+        reportService = modelFactory.getReportService();
 
         selectedTour.addListener((observableValue, tour, t1) -> selectedTourOrLogsChanged());
 
@@ -69,6 +75,38 @@ public class InitViewModel {
             selectedTourImage.setValue(toursModel.getImageFor(selectedTour.get()));
             selectedTourDescription.setValue(selectedTour.get().getDescription());
             selectedTourName.setValue(selectedTour.get().getName());
+        }
+    }
+
+    public void generateFullReport() {
+        FileChooser fileChooser = new FileChooser();
+        var file = fileChooser.showOpenDialog(new Stage());
+        try {
+            reportService.generateFullReport(file.getAbsolutePath());
+        } catch (FileNotFoundException | DocumentException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "PDF generation failed, try again!");
+            alert.showAndWait();
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "PDF generation successful!");
+        alert.showAndWait();
+    }
+
+    public void generateSingleReport() {
+        var tour = selectedTour.get();
+        if (tour != null) {
+            FileChooser fileChooser = new FileChooser();
+            var file = fileChooser.showOpenDialog(new Stage());
+            try {
+                reportService.generateSingleReport(tour, file.getAbsolutePath());
+            } catch (FileNotFoundException | DocumentException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "PDF generation failed, try again!");
+                alert.showAndWait();
+            }
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "PDF generation successful!");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "No tour selected!");
+            alert.showAndWait();
         }
     }
 

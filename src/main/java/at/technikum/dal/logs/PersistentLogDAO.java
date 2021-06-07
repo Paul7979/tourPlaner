@@ -20,6 +20,15 @@ public class PersistentLogDAO implements LogDAO {
             INSERT into logs (tour_id, report, distance, totaltime, rating, averagespeed, typeoftransport, difficulty, recommendedpeoplecount, date) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""";
 
+    private static final String GET_TOTAL_DISTANCE_FOR_TOUR = """
+            SELECT sum(distance::integer) from logs where tour_id = ?""";
+
+    private static final String GET_AVG_RATING_FOR_TOUR = """
+            SELECT avg(rating) from logs where tour_id = ?""";
+
+    private static final String GET_AVG_DIFFICULTY_FOR_TOUR = """
+            SELECT avg(difficulty::integer) from logs where tour_id = ?""";
+
     private static final String UPDATE_LOG = """
             UPDATE logs SET report = ?, distance = ?, totaltime = ?,  rating = ?, averagespeed = ?, typeoftransport = ?, difficulty = ?, recommendedpeoplecount = ?, date = ? 
             WHERE id = ?;""";
@@ -45,8 +54,75 @@ public class PersistentLogDAO implements LogDAO {
             log.error("Error creating log for tour", throwables);
         }
         SQLConnectionProvider.releaseConnection(connection);
-
     }
+
+    @Override
+    public int getAvgRatingFor(Tour tour) {
+        var connection = SQLConnectionProvider.getConnection();
+        try {
+            var preparedStatement = connection.prepareStatement(GET_AVG_RATING_FOR_TOUR);
+            preparedStatement.setLong(1, tour.getId());
+            var resultSet = preparedStatement.executeQuery();
+            int sum = 0;
+            if (resultSet.next()) {
+                sum = resultSet.getInt(0);
+            } else {
+                sum = 0;
+            }
+            SQLConnectionProvider.releaseConnection(connection);
+            return sum;
+        } catch (SQLException throwables) {
+            log.error("Error creating log for tour", throwables);
+            SQLConnectionProvider.releaseConnection(connection);
+        }
+        return 0;
+    }
+
+    @Override
+    public int getAvgDifficultyFor(Tour tour) {
+        var connection = SQLConnectionProvider.getConnection();
+        try {
+            var preparedStatement = connection.prepareStatement(GET_AVG_DIFFICULTY_FOR_TOUR);
+            preparedStatement.setLong(1, tour.getId());
+            var resultSet = preparedStatement.executeQuery();
+            int sum = 0;
+            if (resultSet.next()) {
+                sum = resultSet.getInt(0);
+            } else {
+                sum = 0;
+            }
+            SQLConnectionProvider.releaseConnection(connection);
+            return sum;
+        } catch (SQLException throwables) {
+            log.error("Error creating log for tour", throwables);
+            SQLConnectionProvider.releaseConnection(connection);
+        }
+        return 0;
+    }
+
+    @Override
+    public int getTotalDistanceFor(Tour tour) {
+        var connection = SQLConnectionProvider.getConnection();
+        try {
+            var preparedStatement = connection.prepareStatement(GET_TOTAL_DISTANCE_FOR_TOUR);
+            preparedStatement.setLong(1, tour.getId());
+            var resultSet = preparedStatement.executeQuery();
+            int sum = 0;
+            if (resultSet.next()) {
+                sum = resultSet.getInt(0);
+            } else {
+                sum = 0;
+            }
+            SQLConnectionProvider.releaseConnection(connection);
+            return sum;
+        } catch (SQLException throwables) {
+            log.error("Error creating log for tour", throwables);
+            SQLConnectionProvider.releaseConnection(connection);
+        }
+        return 0;
+    }
+
+
 
     private void setValues(Log log_in, Tour tour, PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setInt(1, (int) tour.getId());

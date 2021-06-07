@@ -9,6 +9,7 @@ import at.technikum.model.location.MapQuestLocationRepository;
 import at.technikum.model.logs.LogsModel;
 import at.technikum.dal.logs.PersistentLogDAO;
 import at.technikum.dal.tours.PersistentTourDAO;
+import at.technikum.model.report.ReportService;
 import at.technikum.model.tours.ToursModel;
 
 import java.util.ArrayList;
@@ -17,13 +18,14 @@ import java.util.List;
 public class ModelFactory {
     private ILocationRepository locationModel;
     private MapSearchService mapSearchService;
-    private RouteSearchService routeSearchService;
     private ToursModel toursModel;
     private LogsModel logsModel;
     private ExportService exportService;
     private ImportService importService;
+    private ReportService reportService;
 
     List<Runnable> selectedTourChangedCallback = new ArrayList<>();
+
 
     public ILocationRepository getLocationModel() {
         if (locationModel == null) {
@@ -73,5 +75,10 @@ public class ModelFactory {
     }
 
 
-
+    public ReportService getReportService() {
+        if (reportService == null) {
+            reportService = new ReportService(new PersistentTourDAO(), new PersistentLogDAO());
+        }
+        return reportService;
+    }
 }

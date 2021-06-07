@@ -34,7 +34,7 @@ public class PersistentTourDAO implements TourDAO {
     private static final String FILTER_FOR_TERM = """
             SELECT distinct tour.id, tour.name, tour.start, tour.destination, tour.distance, tour.description, path_to_picture 
             from tour 
-            inner join logs on logs.tour_id = tour.id 
+            left join logs on logs.tour_id = tour.id 
             WHERE tour.name like ? or tour.start like ? or tour.destination like ? or tour.description like ? or logs.report like ? or logs.difficulty like ? or logs.typeoftransport like ?""";
 
     @Override

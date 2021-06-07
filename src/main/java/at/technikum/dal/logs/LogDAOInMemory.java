@@ -47,6 +47,21 @@ public class LogDAOInMemory implements LogDAO {
     }
 
     @Override
+    public int getAvgRatingFor(Tour tour) {
+        throw new IllegalStateException("Not implemented");
+    }
+
+    @Override
+    public int getAvgDifficultyFor(Tour tour) {
+        throw new IllegalStateException("Not implemented");
+    }
+
+    @Override
+    public int getTotalDistanceFor(Tour tour) {
+        throw new IllegalStateException("Not implemented");
+    }
+
+    @Override
     public Optional<List<Log>> getLogsFor(Tour tour) {
         return Optional.ofNullable(logsForTour.get(tour));
     }
