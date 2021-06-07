@@ -65,7 +65,7 @@ public class PersistentLogDAO implements LogDAO {
             var resultSet = preparedStatement.executeQuery();
             int sum = 0;
             if (resultSet.next()) {
-                sum = resultSet.getInt(0);
+                sum = resultSet.getInt(1);
             } else {
                 sum = 0;
             }
@@ -87,7 +87,7 @@ public class PersistentLogDAO implements LogDAO {
             var resultSet = preparedStatement.executeQuery();
             int sum = 0;
             if (resultSet.next()) {
-                sum = resultSet.getInt(0);
+                sum = resultSet.getInt(1);
             } else {
                 sum = 0;
             }
@@ -109,7 +109,7 @@ public class PersistentLogDAO implements LogDAO {
             var resultSet = preparedStatement.executeQuery();
             int sum = 0;
             if (resultSet.next()) {
-                sum = resultSet.getInt(0);
+                sum = resultSet.getInt(1);
             } else {
                 sum = 0;
             }

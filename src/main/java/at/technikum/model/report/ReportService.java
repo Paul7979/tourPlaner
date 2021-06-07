@@ -21,6 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ReportService {
 
     private final Font HEADER_FONT = new Font(Font.FontFamily.COURIER, 15, Font.BOLD);
+    private final Font SUBHEADER_FONT = new Font(Font.FontFamily.COURIER, 12, Font.BOLD);
+
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd MM yyyy");
     private final TourDAO tourDAO;
     private final LogDAO logDAO;
@@ -36,20 +38,21 @@ public class ReportService {
         Paragraph tours = new Paragraph();
         tourDAO.getAll().forEach(tour -> {
             counter.getAndIncrement();
-            Paragraph tourParagraph = new Paragraph(counter.get() + ". " + tour.getName() + "\n");
+            Paragraph tourParagraph = new Paragraph();
+            tourParagraph.add(new Paragraph(counter.get() + ". " + tour.getName() + "\n", SUBHEADER_FONT));
             tourParagraph.setIndentationLeft(10);
             tourParagraph.add("From: " + tour.getStart() + "\n");
             tourParagraph.add("To: " + tour.getDestination() +"\n");
             tourParagraph.add("Distance : " + tour.getDistance() + "km\n");
             tourParagraph.add(addImage(tour));
-            tourParagraph.add("\n");
-            if (logDAO.getLogsFor(tour).isPresent()) {
-                tourParagraph.add("Summary of logs: \n");
+            tourParagraph.add(new Paragraph("Summary of Logs: ", SUBHEADER_FONT));
+            var logs = logDAO.getLogsFor(tour);
+            if (logs.isPresent() && logs.get().size() > 0) {
                 tourParagraph.add("Total distance: " + logDAO.getTotalDistanceFor(tour)+ "km\n");
                 tourParagraph.add("Average Rating: " + logDAO.getAvgRatingFor(tour)+ "\n");
-                tourParagraph.add("Average Difficulty: " + logDAO.getAvgDifficultyFor(tour) +"\n");
+                tourParagraph.add("Average Difficulty: " + logDAO.getAvgDifficultyFor(tour) +"\n\n");
             } else {
-                tourParagraph.add("No logs added for this tour yet. \n");
+                tourParagraph.add("No logs added for this tour yet. \n\n");
             }
             log.info("Added {}", tour);
             tours.add(tourParagraph);
