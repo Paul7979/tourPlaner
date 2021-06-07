@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AppPropertiesTest {
     String DB_URL = "DB_URL";
@@ -65,6 +64,16 @@ class AppPropertiesTest {
                 .getContextClassLoader()
                 .getResourceAsStream("application_valid.properties"));
         properties.remove(DB_USER);
+        var valid = AppProperties.initializeProperties(properties);
+        assertThat(valid).isFalse();
+    }
+
+    @Test
+    void validAppPropertiesWhenLoadingInvalidPropertiesThenFalseReturned() throws IOException {
+        Properties properties = new Properties();
+        properties.load(Thread.currentThread()
+                .getContextClassLoader()
+                .getResourceAsStream("application_invalid.properties"));
         var valid = AppProperties.initializeProperties(properties);
         assertThat(valid).isFalse();
     }
